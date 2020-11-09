@@ -13,6 +13,7 @@ const Auth = async (req, res, next) => {
   try {
     const decoded = jwt.verify(token, config.get("application.jwt.key"));
 
+    console.log("decoded", decoded);
     req.user = decoded;
     next();
   } catch (ex) {

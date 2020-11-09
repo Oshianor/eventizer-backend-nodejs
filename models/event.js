@@ -12,11 +12,10 @@ const eventSchema = new mongoose.Schema(
     pricing: [
       {
         type: ObjectId,
-        required: true,
-        unique: true,
-        ref: "Pricing",
+        ref: "Pricing"
       },
     ],
+    img: [String],
     pricingType: {
       type: String,
       enum: ["free", "paid"],
@@ -45,7 +44,7 @@ const eventSchema = new mongoose.Schema(
       required: true,
       index: true,
     },
-    tagsString: {
+    tagString: {
       type: String,
       required: true,
       text: true,
@@ -77,7 +76,7 @@ const eventSchema = new mongoose.Schema(
     description: {
       type: String,
       required: true,
-      default: "",
+      maxlength: 3000,
     },
   },
   {
@@ -85,38 +84,35 @@ const eventSchema = new mongoose.Schema(
   }
 );
 
-
-function validatePricing(data) {
+function validateEvent(data) {
   const Schema = Joi.object().keys({
-    name: Joi.string().max(30).label("Plan name").required(),
-    features: Joi.array().min(0).label("Plan features").required(),
-    priority: Joi.number().min(0).label("Priority").required(),
-    transactionCost: Joi.number().min(0).label("Transaction Cost").required(),
-    price: Joi.number().min(0).label("Price").required(),
-    currency: Joi.string().min(0).label("Format").valid("NGN").required(),
-    type: Joi.string()
-      .min(0)
-      .label("Type")
-      .valid("freemium", "premium")
+    name: Joi.string().max(30).label("Event Name").required(),
+    type: Joi.array().label("Event Type").valid("public", "private").required(),
+    location: Joi.string().label("Location").required(),
+    totalTicket: Joi.number().min(1).label("Total Ticket").required(),
+    category: Joi.string()
+      .label("Category")
+      .regex(/^[0-9a-fA-F]{24}$/)
       .required(),
-  });
-
-  return Schema.validate(data);
-}
-
-
-function validateUpdatePricing(data) {
-  const Schema = Joi.object().keys({
-    name: Joi.string().max(30).label("Plan name").optional(),
-    features: Joi.array().min(0).label("Plan features").optional(),
-    priority: Joi.number().min(0).label("Priority").optional(),
-    transactionCost: Joi.number().min(0).label("Transaction Cost").optional(),
-    price: Joi.number().min(0).label("Price").optional(),
-    currency: Joi.string().min(0).label("Format").valid("NGN").optional(),
-    type: Joi.string()
-      .min(0)
-      .label("Type")
-      .valid("freemium", "premium")
+    pricingType: Joi.string()
+      .label("Pricing Type")
+      .valid("free", "paid")
+      .required(),
+    tags: Joi.array().label("Tag").items(Joi.string().required()).required(),
+    description: Joi.string().max(3000).allow("").required(),
+    startDate: Joi.date().required(),
+    endDate: Joi.date().required(),
+    paymentDeadline: Joi.date().required(),
+    pricing: Joi.array()
+      .items({
+        name: Joi.string().max(30).label("Pricing Name").required(),
+        ticket: Joi.number().required(),
+        price: Joi.number().min(1).required(),
+        quantity: Joi.number().required(),
+        description: Joi.string().max(225).allow("").required(),
+        startDate: Joi.date().required(),
+        endDate: Joi.date().required(),
+      })
       .optional(),
   });
 
@@ -127,6 +123,5 @@ const Event = mongoose.model("Event", eventSchema);
 
 module.exports = {
   Event,
-  validatePricing,
-  validateUpdatePricing,
+  validateEvent,
 };

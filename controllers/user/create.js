@@ -5,7 +5,7 @@ const { JsonResponse } = require("../../lib/apiResponse");
 const { MSG_TYPES } = require("../../constant/msg");
 const bcrypt = require("bcrypt");
 const { Mailer, GenerateToken } = require("../../utils");
-const SendOTPCode = require("../../templates")
+const Template = require("../../templates");
 
 
 exports.user = async (req, res) => {
@@ -27,7 +27,7 @@ exports.user = async (req, res) => {
     await newUser.save();
 
     const subject = "Account Verification Code";
-    const html = SendOTPCode.Verification(token, newUser.email, "user");
+    const html = Template.Verification(token, newUser.email, "user");
     await Mailer(newUser.email, subject, html);
 
     JsonResponse(res, 200, MSG_TYPES.ACCOUNT_CREATED, null, null);

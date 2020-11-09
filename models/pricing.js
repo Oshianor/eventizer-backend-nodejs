@@ -14,7 +14,7 @@ const pricingSchema = new mongoose.Schema(
       type: ObjectId,
       required: true,
       index: true,
-      ref: "Event"
+      ref: "Event",
     },
     ticket: {
       type: Number,
@@ -30,7 +30,9 @@ const pricingSchema = new mongoose.Schema(
     },
     description: {
       type: String,
-      default: "",
+      maxlength: 300,
+      required: true,
+      default: ""
     },
     startDate: {
       type: Date,
@@ -52,7 +54,5 @@ const pricingSchema = new mongoose.Schema(
 const Pricing = mongoose.model("Pricing", pricingSchema);
 
 module.exports = {
-  Pricing,
-  validatePricing,
-  validateUpdatePricing,
+  Pricing
 };

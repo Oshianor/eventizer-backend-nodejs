@@ -1,4 +1,5 @@
 const { User } = require("../../models/users");
+const { Admin } = require("../../models/admin");
 const { Organizer, validateVerifyAccount } = require("../../models/organizer");
 const config = require("config");
 const { JsonResponse } = require("../../lib/apiResponse");
@@ -38,6 +39,10 @@ exports.account = async (req, res) => {
       const organizer = await Organizer.findOne(dataReq);
       if (!organizer) return JsonResponse(res, 404, MSG_TYPES.NOT_FOUND, null, null);
       await organizer.updateOne(dataUpdate);
+    } else if (req.body.type === "admin") {
+      const admin = await Admin.findOne(dataReq);
+      if (!admin) return JsonResponse(res, 404, MSG_TYPES.NOT_FOUND, null, null);
+      await admin.updateOne(dataUpdate);
     }
 
     JsonResponse(res, null, MSG_TYPES.ACCOUNT_VERIFIED, null, null);

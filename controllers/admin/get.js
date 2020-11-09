@@ -1,7 +1,7 @@
 const Joi = require("joi");
 const { Admin } = require("../../models/admin");
 const { JsonResponse } = require("../../lib/apiResponse");
-const { MSG_TYPES } = require("../../constant/types");
+const { MSG_TYPES } = require("../../constant/msg");
 
 /**
  * Get Single

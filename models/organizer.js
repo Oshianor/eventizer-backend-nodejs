@@ -126,7 +126,7 @@ function validateVerifyAccount(user) {
   const Schema = Joi.object().keys({
     email: Joi.string().email().label("Email").max(50).required(),
     token: Joi.string().label("Token").max(225).required(),
-    type: Joi.string().valid("user", "organizer").required(),
+    type: Joi.string().valid("user", "organizer", "admin").required(),
   });
 
   return Schema.validate(user);
