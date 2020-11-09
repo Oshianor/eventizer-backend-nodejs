@@ -1,0 +1,29 @@
+{
+	application: {
+    port: 4000,
+		jwt: {
+			key: "23333333333333333",
+			expireDate: "30w"
+		},
+    api: "https://api.eventizer.com"
+  },
+  database: {
+    port: 27001,
+    url: "",
+  },
+  aws: {
+    region: "af-south-1",
+    bucket: "exalt-dev",
+  },
+  mail: {
+    key: "SG.jXcQO8Q7T0SH0E",
+    email: "sales@exaltapp.com",
+  },
+  cdn: {
+    url: "https://eerrr.cloudfront.net/",
+  },
+  paystack: {
+    secret: "sk_test_44f0de5ab496afb",
+    public: "pk_test_ad7a14206a8abc7",
+  }
+}
