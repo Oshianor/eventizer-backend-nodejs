@@ -1,15 +1,14 @@
 const express = require("express");
 const router = express.Router();
-const admin = require("../controllers/admin");
-const auth = require("../controllers/auth");
+const controller = require("../controllers");
 const { Auth } = require("../middlewares/auth");
 
 // create admin account
-router.post("/", admin.create.admin);
+router.post("/", controller.admin.create);
 // create category
-router.post("/category", Auth, admin.create.category);
+router.post("/category", Auth, controller.admin.category);
 // login admin
-router.post("/login", auth.login.admin);
+router.get("/state", controller.admin.state);
 
 
 module.exports = router;

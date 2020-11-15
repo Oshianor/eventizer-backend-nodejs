@@ -1,10 +1,12 @@
 const express = require("express");
 const router = express.Router();
-const event = require("../controllers/event");
+const controller = require("../controllers");
 const { Auth } = require("../middlewares/auth")
 
 // Create an event
-router.post("/", Auth, event.create.event);
+router.post("/", Auth, controller.event.create);
+
+router.get("/", controller.event.all);
 
 
 module.exports = router;

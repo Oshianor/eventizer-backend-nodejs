@@ -17,7 +17,7 @@ const MSG_ERRORS = Object.freeze({
 });
 
 const MSG_SUCCESS = Object.freeze({
-  ACCOUNT_CREATED: "Account Successfully Created.",
+  ACCOUNT_CREATED: "Account Successfully Created. Please Verify Your Account to Proceed",
   LOGGED_IN: "Successfully logged in",
   DELETED: "Resource Deleted Successfully",
   UPDATED: "Resource Updated Successfully",

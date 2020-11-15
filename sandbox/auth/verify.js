@@ -35,10 +35,11 @@ exports.account = async (req, res) => {
       const user = await User.findOne(dataReq);
       if (!user) return JsonResponse(res, 404, MSG_TYPES.NOT_FOUND, null, null);
       await user.updateOne(dataUpdate);
-    } else if (req.body.type === "organizer") {
-      const organizer = await Organizer.findOne(dataReq);
-      if (!organizer) return JsonResponse(res, 404, MSG_TYPES.NOT_FOUND, null, null);
-      await organizer.updateOne(dataUpdate);
+      res.header("x-auth-token", user.generateToken());
+    // } else if (req.body.type === "organizer") {
+    //   const organizer = await Organizer.findOne(dataReq);
+    //   if (!organizer) return JsonResponse(res, 404, MSG_TYPES.NOT_FOUND, null, null);
+    //   await organizer.updateOne(dataUpdate);
     } else if (req.body.type === "admin") {
       const admin = await Admin.findOne(dataReq);
       if (!admin) return JsonResponse(res, 404, MSG_TYPES.NOT_FOUND, null, null);
@@ -46,6 +47,7 @@ exports.account = async (req, res) => {
     }
 
     JsonResponse(res, null, MSG_TYPES.ACCOUNT_VERIFIED, null, null);
+    return
   } catch (error) {
     console.log(error);
     return res.status(400).send("Something went wrong");

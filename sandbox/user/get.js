@@ -6,7 +6,10 @@ const { MSG_TYPES } = require("../../constant/msg");
 
 exports.user = async (req, res) => {
   try {
-    const user = await User.findOne({ _id: req.user.id, verified: true, status: "active" }).select("-password");
+    const user = await User.findOne({
+      _id: req.user.id,
+      status: "active",
+    }).select("-password -rememberToken");
 
     if (!user) return JsonResponse(res, 404, MSG_TYPES.NOT_FOUND, null, null);
 

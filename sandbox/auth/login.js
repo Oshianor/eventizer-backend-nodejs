@@ -20,11 +20,10 @@ exports.user = async (req, res) => {
 		// find the user trying to login
     const user = await User.findOne({
       email: req.body.email.toLowerCase(),
-      verified: true,
       status: "active",
+      verified: true
     });
 		if (!user) return JsonResponse(res, 400, MSG_TYPES.ACCOUNT_INVALID, null, null);
-
 
 		// compare request password with the password saved on the database
     let validPassword = await bcrypt.compare(req.body.password, user.password);

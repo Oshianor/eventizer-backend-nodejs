@@ -7,7 +7,6 @@ const config = require("config");
 const moment = require("moment");
 const { JsonResponse } = require("../../lib/apiResponse");
 const { MSG_TYPES } = require("../../constant/msg");
-const bcrypt = require("bcrypt");
 const { AsyncForEach } = require("../../utils");
 
 /**
@@ -23,12 +22,13 @@ exports.event = async (req, res) => {
       return JsonResponse(res, 400, error.details[0].message, null, null);
 
     // check if account exist
-    const organizer = await Organizer.findOne({
-      email: req.user.email,
+    const user = await User.findOne({
+      _id: req.user.id,
+      type: "organizer",
       verified: true,
       status: "active",
     });
-    if (!organizer)
+    if (!user)
       return JsonResponse(res, 400, MSG_TYPES.NOT_FOUND, null, null);
 
     const category = await Category.findById(req.body.category);

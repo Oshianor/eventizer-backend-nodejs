@@ -7,7 +7,6 @@ const AWS = require("aws-sdk");
 const s3 = new AWS.S3();
 const sgMail = require("@sendgrid/mail");
 const RandExp = require("randexp");
-const events = require("events");
 
 const GenerateToken = (num) => {
   var text = "";
@@ -86,7 +85,17 @@ const UploadFileFromBinary = async (fileInBanary, fileName) => {
   return upload;
 };
 
-const eventEmitter = new events.EventEmitter();
+const Paginate = (req) => {
+  const page =
+    typeof req.query.page !== "undefined" ? Math.abs(req.query.page) : 1;
+  const pageSize =
+    typeof req.query.pageSize !== "undefined"
+      ? Math.abs(req.query.pageSize)
+      : 10;
+  const skip = (page - 1) * pageSize;
+
+  return { page, pageSize, skip };
+};
 
 module.exports = {
   GenerateToken,
@@ -95,5 +104,5 @@ module.exports = {
   UploadFileFormLocal,
   UploadFileFromBinary,
   AsyncForEach,
-  eventEmitter,
+  Paginate,
 };

@@ -5,7 +5,8 @@
 			key: "23333333333333333",
 			expireDate: "30w"
 		},
-    api: "https://api.eventizer.com"
+    api: "https://api.eventizer.com",
+    domain: "http://localhost:4000"
   },
   database: {
     port: 27001,

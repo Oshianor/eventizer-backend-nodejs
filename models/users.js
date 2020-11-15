@@ -16,7 +16,14 @@ const complexityOptions = {
 };
 const UserSchema = new mongoose.Schema(
   {
-    name: { type: String, maxlength: 30, default: "" },
+    name: { type: String, maxlength: 30, default: null },
+    username: { type: String, maxlength: 30, default: null, index: true },
+    bio: { type: String, maxlength: 1000, default: "" },
+    state: { type: String, required: true },
+    type: {
+      type: String,
+      enum: ["user", "organizer"],
+    },
     email: {
       type: String,
       index: true,
@@ -49,7 +56,8 @@ const UserSchema = new mongoose.Schema(
       required: true,
       default: "active",
     },
-    following: [ObjectId],
+    following: [{ type: ObjectId, ref: "User" }],
+    followers: [{ type: ObjectId, ref: "User" }],
     rememberToken: {
       token: {
         type: String,
@@ -60,6 +68,25 @@ const UserSchema = new mongoose.Schema(
         type: Date,
         default: null,
       },
+    },
+    totalEvents: {
+      type: Number,
+      default: 0,
+    },
+    rating: {
+      type: Number,
+      default: 0,
+    },
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    },
+    deletedBy: {
+      type: ObjectId,
+    },
+    deletedAt: {
+      type: Date,
+      default: null,
     },
   },
   {
@@ -85,6 +112,16 @@ const User = mongoose.model("User", UserSchema);
 function validateUser(user) {
   const Schema = Joi.object().keys({
     email: Joi.string().email().label("Email").max(50).required(),
+    // username: Joi.string()
+    //   .max(30)
+    //   .when("type", {
+    //     is: "organizer",
+    //     then: Joi.required(),
+    //     otherwise: Joi.forbidden(),
+    //   }),
+    // name: Joi.string().max(30).required(),
+    state: Joi.string().required(),
+    type: Joi.string().email().valid("user", "organizer").required(),
     password: passwordComplexity(complexityOptions)
       .label("Password")
       .required(),
