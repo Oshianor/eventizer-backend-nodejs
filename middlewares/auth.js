@@ -19,7 +19,7 @@ const Auth = async (req, res, next) => {
   } catch (ex) {
     console.log(ex);
     if (ex.msg) {
-      return JsonResponse(res, 401, ex.msg, null, null);
+      return JsonResponse(res, 401, ex.msg);
     }
     res.status(406).send();
   }

@@ -1,7 +1,11 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const { User, validateLogin } = require("../models/users");
-const { Admin, validateAdminLogin } = require("../models/admin");
+const {
+  Admin,
+  validateAdminLogin,
+  validateVerifyAccount,
+} = require("../models/admin");
 const { JsonResponse } = require("../lib/apiResponse");
 const { MSG_TYPES } = require("../constant/msg");
 

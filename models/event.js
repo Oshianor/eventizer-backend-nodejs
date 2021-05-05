@@ -12,7 +12,7 @@ const eventSchema = new mongoose.Schema(
     pricing: [
       {
         type: ObjectId,
-        ref: "Pricing"
+        ref: "Pricing",
       },
     ],
     img: [String],
@@ -31,6 +31,10 @@ const eventSchema = new mongoose.Schema(
       index: true,
     },
     location: {
+      type: String,
+      required: true,
+    },
+    address: {
       type: String,
       required: true,
     },
@@ -89,6 +93,7 @@ function validateEvent(data) {
     name: Joi.string().max(30).label("Event Name").required(),
     type: Joi.array().label("Event Type").valid("public", "private").required(),
     location: Joi.string().label("Location").required(),
+    address: Joi.string().label("Address").required(),
     totalTicket: Joi.number().min(1).label("Total Ticket").required(),
     category: Joi.string()
       .label("Category")
@@ -105,7 +110,7 @@ function validateEvent(data) {
     paymentDeadline: Joi.date().required(),
     pricing: Joi.array()
       .items({
-        name: Joi.string().max(30).label("Pricing Name").required(),
+        name: Joi.string().max(15).label("Pricing Name").required(),
         ticket: Joi.number().required(),
         price: Joi.number().min(1).required(),
         quantity: Joi.number().required(),

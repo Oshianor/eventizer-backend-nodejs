@@ -7,6 +7,7 @@ const { Category, validateCategory } = require("../models/category");
 const { JsonResponse } = require("../lib/apiResponse");
 const { MSG_TYPES, ACCOUNT_TYPES } = require("../constant/msg");
 const { UploadFileFromBinary, Mailer, GenerateToken } = require("../utils");
+const bcrypt = require("bcrypt");
 
 /**
  * Create Admin
@@ -76,7 +77,7 @@ exports.category = async (req, res) => {
  */
 exports.state = async (req, res) => {
   try {
-    const dir = path.join(__dirname + "../../../constant/states.json");
+    const dir = path.join(__dirname + "../../constant/states.json");
     const obj = JSON.parse(fs.readFileSync(dir, "utf8"));
 
     JsonResponse(res, 200, MSG_TYPES.FETCHED, obj, null);

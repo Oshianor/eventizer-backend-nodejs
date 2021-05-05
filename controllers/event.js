@@ -7,7 +7,7 @@ const { Pricing } = require("../models/pricing");
 const { Category } = require("../models/category");
 const { JsonResponse } = require("../lib/apiResponse");
 const { MSG_TYPES } = require("../constant/msg");
-const { AsyncForEach } = require("../utils");
+const { AsyncForEach, Paginate } = require("../utils");
 
 /**
  * Create event
@@ -28,7 +28,7 @@ exports.create = async (req, res) => {
       verified: true,
       status: "active",
     });
-    if (!user) return JsonResponse(res, 400, MSG_TYPES.NOT_FOUND, null, null);
+    if (!user) return JsonResponse(res, 400, "This user account not found.");
 
     const category = await Category.findById(req.body.category);
     if (!category)
@@ -41,7 +41,7 @@ exports.create = async (req, res) => {
       await AsyncForEach(req.body.pricing, (data, index, arr) => {
         req.body.pricing[index].event = newEvent._id;
       });
-      const newPricing = await Pricing.create(req.body.pricing);
+      const newPricing = await Pricing.create(JSON.parse(JSON.stringify(req.body.pricing)));
       newEvent.pricing = newPricing;
     }
 
@@ -70,8 +70,9 @@ exports.all = async (req, res) => {
     const event = await Event.find({ endDate: { $gte: currentDate } })
       .sort({ createdAt: -1 })
       .limit(pageSize)
-      .skip(skip);
-    const total = await Event.find({ endDate: { $gte: currentDate } });
+      .skip(skip)
+      .populate("pricing");
+    const total = await Event.find({ endDate: { $gte: currentDate } }).countDocuments();
 
     const meta = {
       total,

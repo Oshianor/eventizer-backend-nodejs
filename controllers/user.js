@@ -22,7 +22,7 @@ exports.create = async (req, res) => {
     if (userExist)
       return JsonResponse(res, 400, MSG_TYPES.ACCOUNT_EXIST, null, null);
 
-    const dir = path.join(__dirname + "../../../constant/states.json");
+    const dir = path.join(__dirname + "../../constant/states.json");
     const obj = JSON.parse(fs.readFileSync(dir, "utf8"));
     if (!obj.includes(req.body.state))
       return JsonResponse(res, 400, "Please provide a valid state", null, null);
@@ -33,7 +33,7 @@ exports.create = async (req, res) => {
     // const day = req.body.type === "user" ? 30 : 2;
     req.body.rememberToken = {
       token,
-      expiredDate: moment().add(req.body.type === "user" ? 30 : 2, "days"),
+      expiredDate: moment().add(2, "days"),
     };
     const newUser = new User(req.body);
     newUser.password = await bcrypt.hash(newUser.password, 10);
